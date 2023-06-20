@@ -1,5 +1,6 @@
 package jpabook.jpashop.service;
 
+import jpabook.jpashop.domain.items.Book;
 import jpabook.jpashop.domain.items.Item;
 import jpabook.jpashop.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,5 +26,18 @@ public class ItemService{
 
     public Item findOne(Long itemId){
         return itemRepository.findOne(itemId);
+    }
+
+    /**
+     * Transactional을 통해서 JPA flush() -> 변경확인 -> commit()
+     * @param itemId
+     * @param bookParam
+     */
+    @Transactional
+    public void updateItem(Long itemId, String name, int price, int stockQuantity){
+        Item item = itemRepository.findOne(itemId);
+        item.setPrice(price);
+        item.setName(name);
+        item.setStockQuantity(stockQuantity);
     }
 }
