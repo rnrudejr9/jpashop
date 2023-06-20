@@ -37,7 +37,7 @@ public class MemberService {
         //exception
         //aws 두개 서버 운영시 중복으로 가입 될 수 있어서 DB 차원에서 unique 제약조건을 걸어두면 좋음
         List<Member> members = memberRepository.findByName(member.getName());
-        if(members.isEmpty()){
+        if(!members.isEmpty()){
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
     }
