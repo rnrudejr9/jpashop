@@ -14,14 +14,14 @@
 * 도서 음반 영화가 있다
 * 상품은 카테고리로 구분
 
-![img.png](img/img.png)
-![img2.png](img/img_1.png)
+![img.png](../img/img.png)
+![img2.png](../img/img_1.png)
 
 ### 한계
 * 다대다는 웬만해선 사용금지 
 * 되도록 양뱡향관계는 지양, 단방향 지향
 
-![img3.png](img/img_2.png)
+![img3.png](../img/img_2.png)
 
 ## 연관관계 매핑 분석
 
@@ -63,7 +63,7 @@ mappedBy가 사용되는 곳은 거울을 가져왔다 라고 생각하면 됨
 
 ## 구현 요구사항
 
-![img.png](img.png)
+![img.png](../img.png)
 
 ### 계층형 구조 설정
 * controller, web : 웹 계층
