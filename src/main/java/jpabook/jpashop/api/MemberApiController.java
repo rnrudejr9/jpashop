@@ -10,21 +10,44 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequiredArgsConstructor
 public class MemberApiController {
     private final MemberService memberService;
 
-    /**
-     *
-     * @RequestBody JSON으로 온 데이터를 매개변수로 바꿔준다 ( springMVC )
-     * @param member Validation 적용
-     * @return
-     */
     @PostMapping("/api/v1/members")
     public CreateMemberResponse saveMemberV1(@RequestBody @Valid Member member){
         Long id = memberService.join(member);
         return new CreateMemberResponse(id);
+    }
+    @GetMapping("/api/v1/members")
+    public List<Member> membersV1(){
+        return memberService.findMembers();
+    }
+
+    @GetMapping("/api/v2/members")
+    public Result membersV2(){
+        List<Member> members = memberService.findMembers();
+        //DTO 타입 변환
+        List<MemberDto> memberDtos = members.stream()
+                .map(m -> new MemberDto(m.getName()))
+                .collect(Collectors.toList());
+        return new Result(memberDtos);
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class Result<T>{
+        private T data;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class MemberDto{
+        private String name;
     }
 
     /**
@@ -53,7 +76,8 @@ public class MemberApiController {
         return new UpdateMemberResponse(member.getName(),member.getId());
     }
 
-    @GetMapping
+
+
 
     @Data
     @AllArgsConstructor
