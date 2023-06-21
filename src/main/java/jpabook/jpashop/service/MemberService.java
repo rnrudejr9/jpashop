@@ -42,6 +42,8 @@ public class MemberService {
         }
     }
 
+
+
     //전체조회
     //트랜잭션간 성능 최적화됨, 단순 읽기용 모드로 읽어
     public List<Member> findMembers(){
@@ -50,5 +52,17 @@ public class MemberService {
 
     public Member findOne(Long memberId){
         return memberRepository.findOne(memberId);
+    }
+
+
+    /**
+     * 변경감지로 인한 엔티티 변경
+     * @param id
+     * @param name
+     */
+    @Transactional
+    public void update(Long id, String name) {
+        Member member = memberRepository.findOne(id);
+        member.setName(name);
     }
 }
