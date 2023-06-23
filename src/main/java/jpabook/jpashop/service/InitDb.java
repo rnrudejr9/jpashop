@@ -25,6 +25,7 @@ public class InitDb {
     @PostConstruct
     public void init(){
         initService.dbInit();
+        initService.dbInit2();
     }
 
 
@@ -35,33 +36,61 @@ public class InitDb {
         private final EntityManager em;
 
         public void dbInit(){
-            Member member = new Member();
-            member.setName("userA");
-            member.setAddress(new Address("서울","1","1111"));
+            Member member =createMember("userA","서울","1","1111");
             em.persist(member);
 
-            Book book = new Book();
-            book.setName("JPA1");
-            book.setPrice(10000);
-            book.setStockQuantity(100);
+            Book book = createBook("JPA1", 10090, 100);
             em.persist(book);
-
-            Book book2 = new Book();
-            book2.setName("JPA1");
-            book2.setPrice(10000);
-            book2.setStockQuantity(100);
+            Book book2 = createBook("JPA2", 20000, 200);;
             em.persist(book2);
 
             OrderItem orderItem1 = OrderItem.createOrderItem(book, 10000, 1);
             OrderItem ordetItem2 = OrderItem.createOrderItem(book2,20000,2);
 
-
-            Delivery delivery = new Delivery();
-            delivery.setAddress(member.getAddress());
+            Delivery delivery = createDelivery(member);
             Order order = Order.createOrder(member, delivery, orderItem1, ordetItem2);
             em.persist(order);
         }
 
+        private static Delivery createDelivery(Member member) {
+            Delivery delivery = new Delivery();
+            delivery.setAddress(member.getAddress());
+            return delivery;
+        }
+
+        private Book createBook(String name, int price, int stockQuantity){
+            Book book = new Book();
+            book.setName(name);
+            book.setPrice(price);
+            book.setStockQuantity(stockQuantity);
+            return book;
+        }
+
+        private Member createMember(String name,String city,String street,String zipcode){
+            Member member = new Member();
+            member.setName(name);
+            member.setAddress(new Address(city,street,zipcode));
+            return member;
+        }
+
+
+        public void dbInit2(){
+            Member member = createMember("userB","진주","2","2222");
+            em.persist(member);
+
+            Book book = createBook("SQL1",1000,10000);
+            em.persist(book);
+
+            Book book2 = createBook("SQL2",1000,100000);
+            em.persist(book2);
+
+            OrderItem orderItem1 = OrderItem.createOrderItem(book, 10000, 1);
+            OrderItem ordetItem2 = OrderItem.createOrderItem(book2,20000,2);
+
+            Delivery delivery = createDelivery(member);
+            Order order = Order.createOrder(member, delivery, orderItem1, ordetItem2);
+            em.persist(order);
+        }
     }
 }
 
