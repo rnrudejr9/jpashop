@@ -20,7 +20,7 @@ logging:
   level:
     org.hibernate.SQL: debug
     #    sql to log able
-    org.hibernate.type: trace
+#    org.hibernate.type: trace
     # paramemter to log
 
 
