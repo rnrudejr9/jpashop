@@ -19,9 +19,9 @@ public class OrderQueryRepository {
     private final EntityManager em;
     
     public List<OrderQueryDto> findOrderQueryDtos(){
-        List<OrderQueryDto> result = findOrders();
+        List<OrderQueryDto> result = findOrders(); //query 1번
         //컬렉션 부분은 직접 채움
-        result.forEach(o -> {
+        result.forEach(o -> { // query n번
             List<OrderItemQueryDto> orderItems = findOrderItems(o.getOrderId());
             o.setOrderItems(orderItems);
         });
