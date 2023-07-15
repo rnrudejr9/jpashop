@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class Order {
     // 연관관계의 주인은 누구냐? -> jpa는 둘중에 어디서 update를 쳐야되냐
     // 둘중에 하나를 주인으로 잡고 변경하면 됨 (Order가 주인)
     private Member member;
+
 
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
