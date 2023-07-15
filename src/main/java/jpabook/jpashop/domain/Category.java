@@ -1,10 +1,10 @@
 package jpabook.jpashop.domain;
 
-import jakarta.persistence.*;
 import jpabook.jpashop.domain.items.Item;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

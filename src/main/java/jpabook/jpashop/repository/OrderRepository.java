@@ -1,12 +1,17 @@
 package jpabook.jpashop.repository;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import jpabook.jpashop.domain.Order;
+import jpabook.jpashop.domain.OrderStatus;
+import jpabook.jpashop.domain.QMember;
+import jpabook.jpashop.domain.QOrder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
@@ -112,4 +117,27 @@ public class OrderRepository {
                 " join fetch  oi.item i", Order.class)
                 .getResultList();
     }
+
+    public List<Order> findAlls(OrderSearch orderSearch){
+        QOrder order = QOrder.order;
+        QMember member = QMember.member;
+
+        JPAQueryFactory query = new JPAQueryFactory(entityManager);
+        return query.select(order)
+                .from(order)
+                .join(order.member, member)
+                .where(statusEq(orderSearch.getOrderStatus()), member.name.like(orderSearch.getMemberName()))
+                .limit(1000)
+                .fetch();
+    }
+
+    private BooleanExpression statusEq(OrderStatus orderStatus){
+        if(orderStatus == null){
+            return null;
+        }else{
+            return QOrder.order.status.eq(orderStatus);
+        }
+    }
+
+
 }

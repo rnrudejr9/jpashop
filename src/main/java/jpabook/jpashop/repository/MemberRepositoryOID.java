@@ -1,13 +1,10 @@
 package jpabook.jpashop.repository;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.PersistenceUnit;
 import jpabook.jpashop.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 //컴포넌트 스캔으로 스프링 빈으로 등록됨

@@ -37,7 +37,7 @@ class MemberServiceTest {
 
         //then : 이런 결과가 나와야해
 
-        assertEquals(member,memberRepository.findOne(join));
+        assertEquals(member,memberRepository.findById(join).get());
     }
 
     @Test
