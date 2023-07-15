@@ -1,11 +1,12 @@
 package jpabook.jpashop.repository.order.query;
 
 import jakarta.persistence.EntityManager;
-import jpabook.jpashop.domain.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 화면이나 api 의존 관계에서 떼어낼 려고 하는 것
@@ -30,6 +31,23 @@ public class OrderQueryRepository {
 
     }
 
+    public List<OrderQueryDto> findAllByDto_Optimization() {
+        List<OrderQueryDto> result = findOrders();
+
+        List<Long> orderIds = result.stream().map(o -> o.getOrderId()).collect(Collectors.toList());
+
+        Map<Long, List<OrderItemQueryDto>> collect = em.createQuery(
+                        "select new jpabook.jpashop.repository.order.query.OrderItemQueryDto(oi.order.id, i.name, oi.orderPrice, oi.count)" +
+                                "from OrderItem oi" +
+                                " join oi.item i" +
+                                " where oi.order.id in :orderIds", OrderItemQueryDto.class)
+                .setParameter("orderIds", orderIds)
+                .getResultList().stream().collect(Collectors.groupingBy(orderItemQueryDto -> orderItemQueryDto.getOrderId()));
+
+        result.forEach(o -> o.setOrderItems(collect.get(o.getOrderId())));
+        return result;
+    }
+
     private List<OrderItemQueryDto> findOrderItems(Long orderId) {
         return em.createQuery(
                 "select new jpabook.jpashop.repository.order.query.OrderItemQueryDto(oi.order.id, i.name, oi.orderPrice, oi.count)" +
@@ -48,4 +66,5 @@ public class OrderQueryRepository {
                         " join o.delivery d", OrderQueryDto.class
         ).getResultList();
     }
+
 }
